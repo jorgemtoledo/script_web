@@ -34,7 +34,7 @@ begin
   sleep 3
 
   # 6️⃣ Inserir o código de verificação
-  codigo_verificacao = "123456"
+  codigo_verificacao = "215785"
   codigo_field = wait.until { driver.find_element(:id, 'idTxtBx_SAOTCC_OTC') }
   codigo_field.send_keys(codigo_verificacao)
   sleep 2
@@ -42,13 +42,11 @@ begin
   # 7️⃣ Clicar no botão "Verificar"
   botao_verificar = wait.until { driver.find_element(:id, 'idSubmit_SAOTCC_Continue') }
   driver.execute_script("arguments[0].click();", botao_verificar)
-  puts "✅ Botão 'Verificar' clicado com sucesso!"
   sleep 4
 
   # 8️⃣ Clicar no botão "Sim"
   botao_sim = wait.until { driver.find_element(:id, 'idSIButton9') }
   driver.execute_script("arguments[0].click();", botao_sim)
-  puts "✅ Botão 'Sim' clicado com sucesso!"
   sleep 5
 
   # 9️⃣ Capturar ID da sessão
@@ -57,33 +55,64 @@ begin
 
   # 🔟 Inserir valor no input manualmente
   unidade_input = wait.until { driver.find_element(:id, 'P9998_UNIDADE') }
-
-  # Remove atributo readonly via JavaScript
   driver.execute_script("arguments[0].removeAttribute('readonly');", unidade_input)
   sleep 1
-
-  # Limpar o campo antes de inserir o texto
   unidade_input.clear
   sleep 1
-
-  # Inserir "Buscar Unidade"
-  unidade_input.send_keys("Buscar Unidade")
+  unidade_input.send_keys("Barra do Garças")
   sleep 2
 
-  # 1️⃣1️⃣ Clicar diretamente no item com data-id="18"
-  puts "✅ Tentando clicar no item com data-id='18'..."
+  # 1️⃣1️⃣ Selecionar unidade com data-id="18"
   item_dropdown = wait.until { driver.find_element(:xpath, "//li[@data-id='18']") }
   driver.execute_script("arguments[0].click();", item_dropdown)
   sleep 2
 
-  # 🔟 Confirmar redirecionamento
-  puts "✅ Página redirecionada com sucesso!"
+  # 1️⃣2️⃣ Clicar no botão de navegação
+  botao_nav_control = wait.until { driver.find_element(:id, 't_Button_navControl') }
+  driver.execute_script("arguments[0].click();", botao_nav_control)
+  sleep 2
+
+  # 1️⃣3️⃣ Selecionar "Home"
+  home_item = wait.until { driver.find_element(:xpath, "//span[text()='Home']") }
+  driver.execute_script("arguments[0].click();", home_item)
+  sleep 2
+
+  # 1️⃣4️⃣ Clicar em "Consulta Cliente"
+  consulta_cliente = wait.until { driver.find_element(:xpath, "//div[@class='a-TreeView-content']/a[contains(text(), 'Consulta Cliente')]") }
+  driver.execute_script("arguments[0].click();", consulta_cliente)
+  sleep 5
+
+  # 1️⃣5️⃣ Inserir número de ligação
+  num_ligacao_field = wait.until { driver.find_element(:id, 'P36_NUM_LIGACAO_PF') }
+  num_ligacao_field.send_keys('403412')
+  sleep 2
+
+  # 1️⃣6️⃣ Clicar no botão "Pesquisar"
+  botao_pesquisar = wait.until { driver.find_element(:id, 'B119727038853751511') }
+  driver.execute_script("arguments[0].click();", botao_pesquisar)
+  sleep 5
+
+  # 1️⃣7️⃣ Clicar no primeiro resultado da pesquisa
+  primeiro_resultado = wait.until { driver.find_element(:xpath, "//td[@headers='LINK']/a") }
+  driver.execute_script("arguments[0].click();", primeiro_resultado)
+  sleep 5
+
+  # 1️⃣8️⃣ Clicar em "Consulta Completa"
+  consulta_completa = wait.until { driver.find_element(:xpath, "//a[contains(@class, 'a-CardView-fullLink') and span[text()='Consulta Completa']]") }
+  driver.execute_script("arguments[0].click();", consulta_completa)
+  sleep 5
+
+  # 1️⃣9️⃣ Clicar no botão "Consulta Contrato"
+  botao_consulta_contrato = wait.until { driver.find_element(:id, 'B62501531920797503') }
+  driver.execute_script("arguments[0].click();", botao_consulta_contrato)
+  sleep 5
+
+  # 🔟 Confirmar redirecionamento (sem a etapa do contrato 26580)
+  puts "✅ Processo finalizado com sucesso!"
   puts "✅ URL após redirecionamento: #{driver.current_url}"
 
-  # Pausar o script por 20 segundos antes de fechar a página
-  sleep 20  # Aguarda 20 segundos para que você veja a página de redirecionamento
+  sleep 10
 
 ensure
-  sleep 5
   driver.quit
 end
